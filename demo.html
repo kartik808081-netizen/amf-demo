@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AMF GYM - Premium Fitness Experience</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #ff1a1a;
+      --primary-hover: #e60000;
+      --primary-glow: rgba(255, 26, 26, 0.4);
+      --bg-dark: #050505;
+      --bg-glass: rgba(15, 15, 15, 0.6);
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --text-main: #ffffff;
+      --text-muted: #b3b3b3;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 15px var(--primary-glow); }
+      50% { box-shadow: 0 0 30px var(--primary-glow); }
+      100% { box-shadow: 0 0 15px var(--primary-glow); }
+    }
+
+    /* NAVBAR */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 20px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-glass);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--glass-border);
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    nav .logo {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--text-main);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    nav .logo span {
+      color: var(--primary);
+    }
+
+    nav .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+
+    nav .nav-links a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      transition: color 0.3s;
+    }
+
+    nav .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    nav .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    nav .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* HERO SECTION */
+    header {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 0 5%;
+    }
+
+    .hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+      opacity: 0.6;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(5,5,5,0.2) 0%, var(--bg-dark) 100%);
+      z-index: -1;
+    }
+
+    .hero-content {
+      text-align: center;
+      max-width: 800px;
+      animation: fadeInUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+
+    .hero-content h1 {
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .hero-content h1 span {
+      background: linear-gradient(90deg, #ff4d4d, var(--primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-content p {
+      font-size: clamp(1rem, 1.5vw, 1.25rem);
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 16px 40px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-family: 'Outfit', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+      animation: pulseGlow 3s infinite;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px var(--primary-glow);
+    }
+
+    .btn-outline {
+      display: inline-block;
+      padding: 16px 40px;
+      background: transparent;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-family: 'Outfit', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255,255,255,0.3);
+      margin-left: 15px;
+    }
+
+    .btn-outline:hover {
+      border-color: white;
+      background: rgba(255,255,255,0.05);
+      transform: translateY(-3px);
+    }
+
+    /* SECTION UTILS */
+    section {
+      padding: 100px 5%;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-subtitle {
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    /* FEATURES GRID */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      group: feature;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-15px);
+      border-color: var(--primary);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px var(--primary-glow);
+    }
+
+    .feature-img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .feature-card:hover .feature-img {
+      transform: scale(1.05);
+    }
+
+    .feature-content {
+      padding: 30px;
+      position: relative;
+      background: linear-gradient(to top, var(--bg-dark) 0%, rgba(5,5,5,0.8) 100%);
+      margin-top: -40px;
+      backdrop-filter: blur(5px);
+    }
+
+    .feature-icon {
+      font-size: 24px;
+      margin-bottom: 15px;
+      display: inline-block;
+      padding: 12px;
+      background: var(--primary);
+      border-radius: 8px;
+      color: white;
+      transform: translateY(-30px);
+      box-shadow: 0 10px 20px var(--primary-glow);
+    }
+
+    .feature-content h3 {
+      font-size: 22px;
+      margin-bottom: 10px;
+      margin-top: -15px;
+    }
+
+    .feature-content p {
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* MEMBERSHIP PLANS */
+    .plans-wrapper {
+      position: relative;
+      z-index: 1;
+    }
+
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .plan-card {
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 40px 30px;
+      text-align: center;
+      position: relative;
+      transition: all 0.4s ease;
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+
+    .plan-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 4px;
+      background: var(--glass-border);
+      transition: background 0.4s ease;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-10px);
+      background: rgba(255,255,255,0.05);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+    }
+
+    .plan-card:hover::before {
+      background: var(--primary);
+    }
+
+    .plan-card.premium {
+      border-color: rgba(255, 26, 26, 0.3);
+      background: linear-gradient(145deg, rgba(255,26,26,0.05) 0%, rgba(255,255,255,0.02) 100%);
+    }
+
+    .plan-card.premium::before {
+      background: var(--primary);
+    }
+
+    .plan-card.premium .popular-badge {
+      position: absolute;
+      top: 15px;
+      right: -35px;
+      background: var(--primary);
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 5px 40px;
+      transform: rotate(45deg);
+      font-family: 'Outfit', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .plan-title {
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: var(--text-main);
+    }
+
+    .plan-price {
+      font-size: 48px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .plan-price span {
+      font-size: 18px;
+      color: var(--text-muted);
+      font-weight: 400;
+      margin-left: 5px;
+    }
+
+    .currency {
+      font-size: 24px;
+      margin-right: 5px;
+      color: var(--primary);
+    }
+
+    .plan-features {
+      list-style: none;
+      margin-bottom: 35px;
+      text-align: left;
+    }
+
+    .plan-features li {
+      padding: 12px 0;
+      color: var(--text-muted);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      font-size: 15px;
+    }
+
+    .plan-features li:last-child {
+      border-bottom: none;
+    }
+
+    .plan-features li::before {
+      content: '✓';
+      color: var(--primary);
+      font-weight: bold;
+      margin-right: 12px;
+      font-size: 18px;
+    }
+
+    .plan-features li.disabled {
+      color: rgba(255,255,255,0.2);
+    }
+    .plan-features li.disabled::before {
+      content: '✕';
+      color: rgba(255,255,255,0.2);
+    }
+
+    .plan-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: transparent;
+      color: white;
+      border: 1px solid var(--glass-border);
+      border-radius: 4px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .plan-card:hover .plan-btn, .plan-card.premium .plan-btn {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .plan-card.premium .plan-btn:hover {
+      background: var(--primary-hover);
+    }
+
+    /* CTA SECTION */
+    .cta-section {
+      background: linear-gradient(135deg, #111, var(--bg-dark));
+      padding: 80px 5%;
+      border-top: 1px solid var(--glass-border);
+      border-bottom: 1px solid var(--glass-border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-bg {
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .cta-text h2 {
+      font-size: clamp(2rem, 3vw, 2.5rem);
+      margin-bottom: 10px;
+    }
+
+    .cta-text p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    /* FOOTER & CONTACT */
+    footer {
+      background: #020202;
+      padding: 60px 5% 30px;
+      border-top: 1px solid var(--glass-border);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto 40px;
+    }
+
+    .footer-col h4 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .footer-col p {
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 15px;
+      font-size: 15px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 15px;
+      color: var(--text-muted);
+    }
+
+    .contact-icon {
+      color: var(--primary);
+      margin-right: 15px;
+      font-size: 20px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.05);
+      color: white;
+      text-decoration: none;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      border: 1px solid var(--glass-border);
+    }
+
+    .social-links a:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    .copyright {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    /* FLOATING WHATSAPP */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #25D366;
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+      z-index: 1000;
+      transition: all 0.3s ease;
+      animation: pulseGlow 2s infinite;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.1) translateY(-5px);
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+    }
+
+    /* MEDIA QUERIES */
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        padding: 15px;
+        gap: 15px;
+      }
+      
+      .hero-content h1 {
+        font-size: 2.5rem;
+      }
+      
+      .cta-content {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .btn-outline {
+        margin-left: 0;
+        margin-top: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <a href="#" class="logo">AMF<span>GYM</span></a>
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#features">Features</a>
+      <a href="#plans">Plans</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <header id="home">
+    <img src="gym_hero_1778085724186.png" alt="Premium Modern Gym Interior" class="hero-bg">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>Build Your <span>Dream</span> Body</h1>
+      <p>Experience the ultimate fitness journey with state-of-the-art equipment, professional guidance, and an elite community of achievers.</p>
+      <a href="#plans" class="btn-primary">Explore Plans</a>
+      <a href="#features" class="btn-outline">Discover More</a>
+    </div>
+  </header>
+
+  <!-- FEATURES SECTION -->
+  <section id="features">
+    <div class="section-header">
+      <span class="section-subtitle">The AMF Advantage</span>
+      <h2 class="section-title">Why Choose Us</h2>
+    </div>
+
+    <div class="features-grid">
+      <!-- Feature 1 -->
+      <div class="feature-card">
+        <img src="gym_equipment_1778085738011.png" alt="Modern Gym Equipment" class="feature-img">
+        <div class="feature-content">
+          <div class="feature-icon">🏋️</div>
+          <h3>Modern Equipment</h3>
+          <p>Train with industry-leading, heavy-duty iron and state-of-the-art biomechanical machines tailored for all fitness levels.</p>
+        </div>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="feature-card">
+        <img src="gym_trainer_1778085754648.png" alt="Certified Personal Trainer" class="feature-img">
+        <div class="feature-content">
+          <div class="feature-icon">👨‍🏫</div>
+          <h3>Certified Trainers</h3>
+          <p>Get personalized guidance from elite professionals who design custom programs to guarantee your success.</p>
+        </div>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="feature-card">
+        <img src="gym_diet_1778085771965.png" alt="Healthy Diet Guidance" class="feature-img">
+        <div class="feature-content">
+          <div class="feature-icon">🥗</div>
+          <h3>Diet Guidance</h3>
+          <p>Fuel your progress with scientific nutrition planning, macro tracking, and customized premium meal recommendations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLANS SECTION -->
+  <section id="plans">
+    <div class="section-header">
+      <span class="section-subtitle">Find Your Fit</span>
+      <h2 class="section-title">Membership Plans</h2>
+    </div>
+
+    <div class="plans-wrapper">
+      <div class="plans-grid">
+        
+        <!-- Basic Plan -->
+        <div class="plan-card">
+          <h3 class="plan-title">Basic</h3>
+          <div class="plan-price"><span class="currency">₹</span>999<span>/mo</span></div>
+          <ul class="plan-features">
+            <li>Full Gym Access</li>
+            <li>Locker Room Access</li>
+            <li class="disabled">Trainer Consultation</li>
+            <li class="disabled">Diet Guidance</li>
+            <li class="disabled">Personal Training</li>
+          </ul>
+          <button class="plan-btn">Join Now</button>
+        </div>
+
+        <!-- Standard Plan -->
+        <div class="plan-card">
+          <h3 class="plan-title">Standard</h3>
+          <div class="plan-price"><span class="currency">₹</span>1499<span>/mo</span></div>
+          <ul class="plan-features">
+            <li>Full Gym Access</li>
+            <li>Locker Room Access</li>
+            <li>Trainer Consultation</li>
+            <li>Diet Tips & Tracking</li>
+            <li class="disabled">Personal Training</li>
+          </ul>
+          <button class="plan-btn">Join Now</button>
+        </div>
+
+        <!-- Premium Plan -->
+        <div class="plan-card premium">
+          <div class="popular-badge">Most Popular</div>
+          <h3 class="plan-title">Premium</h3>
+          <div class="plan-price"><span class="currency">₹</span>2499<span>/mo</span></div>
+          <ul class="plan-features">
+            <li>Full Gym Access</li>
+            <li>Locker Room Access</li>
+            <li>Dedicated Nutritionist</li>
+            <li>Advanced Diet Plan</li>
+            <li>1-on-1 Personal Training</li>
+          </ul>
+          <button class="plan-btn">Join Now</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA SECTION -->
+  <section class="cta-section">
+    <div class="cta-bg"></div>
+    <div class="cta-content">
+      <div class="cta-text">
+        <h2>Ready to Transform Your Life?</h2>
+        <p>Join AMF Gym today and take the first step towards a stronger, healthier you.</p>
+      </div>
+      <a href="#plans" class="btn-primary">Start Your Journey</a>
+    </div>
+  </section>
+
+  <!-- FOOTER & CONTACT -->
+  <footer id="contact">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>AMF<span>GYM</span></h4>
+        <p>Premium Training • Real Results • Strong Community. We provide the perfect environment for you to achieve your fitness goals.</p>
+        <div class="social-links">
+          <a href="#">IG</a>
+          <a href="#">FB</a>
+          <a href="#">TW</a>
+        </div>
+      </div>
+      
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <p><a href="#home" style="color:var(--text-muted); text-decoration:none;">Home</a></p>
+        <p><a href="#features" style="color:var(--text-muted); text-decoration:none;">Features</a></p>
+        <p><a href="#plans" style="color:var(--text-muted); text-decoration:none;">Pricing Plans</a></p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact Us</h4>
+        <div class="contact-item">
+          <span class="contact-icon">📍</span>
+          <span>AMF Gym, Jabinda Residency, near Dargah Chowk, Devanagari, Shahnoorwadi, Chhatrapati Sambhajinagar, Maharashtra 431009</span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">📞</span>
+          <span>+91 8668626955</span>
+        </div>
+      </div>
+    </div>
+    <div class="copyright">
+      © 2026 AMF GYM - Talk Of The Town. All Rights Reserved.
+    </div>
+  </footer>
+
+  <!-- WHATSAPP FLOATING BUTTON -->
+  <a href="https://wa.me/918668626955" class="whatsapp-float" target="_blank" rel="noopener noreferrer">
+    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-3.825 3.113-6.937 6.937-6.937 1.856.001 3.598.723 4.907 2.034 1.31 1.311 2.031 3.054 2.03 4.908-.001 3.825-3.113 6.938-6.937 6.938z"/>
+    </svg>
+  </a>
+
+  <!-- SCRIPT FOR NAVBAR SCROLL EFFECT -->
+  <script>
+    window.addEventListener('scroll', () => {
+      const nav = document.querySelector('nav');
+      if (window.scrollY > 50) {
+        nav.style.background = 'rgba(10, 10, 10, 0.9)';
+        nav.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.5)';
+      } else {
+        nav.style.background = 'var(--bg-glass)';
+        nav.style.boxShadow = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
